@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Picker - LifeHub</title>
+
+  <!-- الخطوط -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- متغيرات LifeHub -->
+  <link rel="stylesheet" href="../../css/variables.css">
+  <!-- ستايل الأداة -->
+  <link rel="stylesheet" href="../../css/tour.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- خلفية متحركة -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- شريط علوي -->
+  <header class="tool-header">
+    <!-- ✅ تم إضافة نص افتراضي للزر -->
+    <button data-tour="colors">!</button>
+    <a href="../../index.html" class="back-btn">
+      <span>←</span>
+      <span>العودة</span>
+    </a>
+    <h1 class="tool-title">
+      <span class="tool-icon">🎨</span>
+      <span>Color Picker</span>
+    </h1>
+    <button class="saved-btn" id="savedBtn">
+      <span>💾</span>
+      <span>المحفوظات</span>
+      <span class="badge" id="savedBadge">0</span>
+    </button>
+  </header>
+
+  <!-- التبويبات -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="image">📸 من صورة</button>
+    <button class="tab" data-tab="manual">🎨 يدوي</button>
+    <button class="tab" data-tab="generator">✨ مولد ذكي</button>
+  </nav>
+
+  <!-- المحتوى -->
+  <main class="tool-main">
+
+    <!-- ─── تبويب الصورة ─── -->
+    <section class="panel active" id="imagePanel">
+
+      <!-- رفع الصورة -->
+      <div class="upload-area" id="uploadArea">
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <label for="fileInput" class="upload-label">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">اضغط لاختيار صورة</div>
+          <div class="upload-hint">أو اسحب الصورة هنا</div>
+        </label>
+      </div>
+
+      <!-- الصورة + Canvas -->
+      <div class="image-workspace hidden" id="imageWorkspace">
+        <div class="canvas-container">
+          <canvas id="imageCanvas"></canvas>
+          <div class="zoom-indicator" id="zoomIndicator"></div>
+        </div>
+        <p class="canvas-hint">👆 اضغط على أي مكان في الصورة لأخذ اللون</p>
+        <button class="small-btn" id="changeImageBtn">📸 تغيير الصورة</button>
+      </div>
+
+      <!-- اللون المختار -->
+      <div class="picked-color hidden" id="pickedColorBox">
+        <div class="color-preview" id="colorPreview"></div>
+        <div class="color-info">
+          <div class="color-value">
+            <span class="color-label">HEX</span>
+            <span class="color-code" id="hexValue">—</span>
+            <button class="copy-mini" data-target="hexValue">📋</button>
+          </div>
+          <div class="color-value">
+            <span class="color-label">RGB</span>
+            <span class="color-code" id="rgbValue">—</span>
+            <button class="copy-mini" data-target="rgbValue">📋</button>
+          </div>
+          <div class="color-value">
+            <span class="color-label">HSL</span>
+            <span class="color-code" id="hslValue">—</span>
+            <button class="copy-mini" data-target="hslValue">📋</button>
+          </div>
+          <button class="save-color-btn" id="saveColorBtn">💾 حفظ في المفضلة</button>
+        </div>
+      </div>
+
+      <!-- Palette تلقائي -->
+      <div class="palette-section hidden" id="paletteSection">
+        <h3 class="section-title">🎨 الألوان السائدة في الصورة</h3>
+        <div class="palette-grid" id="paletteGrid"></div>
+        <button class="action-btn primary" id="savePaletteBtn">💾 حفظ الـ Palette كله</button>
+      </div>
+
+    </section>
+
+    <!-- ─── تبويب يدوي ─── -->
+    <section class="panel" id="manualPanel">
+
+      <div class="manual-section">
+        <h2 class="panel-title">🎨 اختر لون يدوياً</h2>
+
+        <div class="color-picker-large">
+          <input type="color" id="colorInput" value="#6366f1">
+          <div class="preview-circle" id="manualPreview" style="background: #6366f1;"></div>
+        </div>
+
+        <div class="manual-info">
+          <div class="color-value">
+            <span class="color-label">HEX</span>
+            <input type="text" id="hexManual" value="#6366f1" class="color-input">
+            <button class="copy-mini" data-source="hexManual">📋</button>
+          </div>
+          <div class="color-value">
+            <span class="color-label">RGB</span>
+            <input type="text" id="rgbManual" readonly class="color-input">
+            <button class="copy-mini" data-source="rgbManual">📋</button>
+          </div>
+          <div class="color-value">
+            <span class="color-label">HSL</span>
+            <input type="text" id="hslManual" readonly class="color-input">
+            <button class="copy-mini" data-source="hslManual">📋</button>
+          </div>
+        </div>
+
+        <!-- معاينة -->
+        <div class="preview-design">
+          <h3>معاينة التصميم:</h3>
+          <div class="preview-card" id="previewCard">
+            <div class="preview-header">عنوان البطاقة</div>
+            <div class="preview-body">
+              <p>هذا نص تجريبي لمعاينة كيف يبدو اللون في تصميم حقيقي.</p>
+              <button class="preview-button">زر تجريبي</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="action-btn primary" id="saveManualBtn">💾 حفظ هذا اللون</button>
+      </div>
+
+    </section>
+
+    <!-- ─── تبويب المولد الذكي ─── -->
+    <section class="panel" id="generatorPanel">
+
+      <h2 class="panel-title">✨ مولد Palette ذكي</h2>
+
+      <div class="generator-controls">
+        <div class="base-color">
+          <label>اللون الأساسي:</label>
+          <input type="color" id="baseColor" value="#6366f1">
+        </div>
+
+        <div class="scheme-buttons">
+          <button class="scheme-btn active" data-scheme="complementary">🔄 متكامل</button>
+          <button class="scheme-btn" data-scheme="analogous">🌊 متجانس</button>
+          <button class="scheme-btn" data-scheme="triadic">🔺 ثلاثي</button>
+          <button class="scheme-btn" data-scheme="tetradic">🟦 رباعي</button>
+          <button class="scheme-btn" data-scheme="monochromatic">📊 أحادي</button>
+        </div>
+      </div>
+
+      <div class="generated-palette" id="generatedPalette"></div>
+
+      <button class="action-btn primary" id="saveGeneratedBtn">💾 حفظ هذا الـ Palette</button>
+
+    </section>
+
+    <!-- ─── قسم المحفوظات ─── -->
+    <section class="saved-section hidden" id="savedSection">
+      <h2 class="panel-title">💾 الألوان والـ Palettes المحفوظة</h2>
+
+      <div class="saved-tabs">
+        <button class="saved-tab active" data-saved="colors">🎨 الألوان</button>
+        <button class="saved-tab" data-saved="palettes">📚 Palettes</button>
+      </div>
+
+      <div class="saved-content" id="savedColors">
+        <div class="empty-state">
+          <div class="empty-icon">🎨</div>
+          <p>لا توجد ألوان محفوظة بعد</p>
+        </div>
+      </div>
+
+      <div class="saved-content hidden" id="savedPalettes">
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <p>لا توجد Palettes محفوظة بعد</p>
+        </div>
+      </div>
+
+      <button class="clear-btn" id="clearSavedBtn">🗑️ مسح كل المحفوظات</button>
+    </section>
+
+  </main>
+
+  <!-- شريط الحالة -->
+  <footer class="status-bar">
+    <span id="statusMessage">✅ جاهز! ارفع صورة أو اختر لون</span>
+  </footer>
+
+  <!-- السكريبت -->
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

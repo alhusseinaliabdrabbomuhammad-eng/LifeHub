@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Notes - LifeHub</title>
+
+  <!-- الخطوط -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- متغيرات LifeHub -->
+  <link rel="stylesheet" href="../../css/variables.css">
+  <!-- ستايل الأداة -->
+   <link rel="stylesheet" href="../../css/tour.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- خلفية متحركة -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- شريط علوي -->
+  <header class="tool-header">
+    <button data-tour="notes"></button>
+    <a href="../../index.html" class="back-btn">
+      <span>←</span>
+      <span>العودة</span>
+    </a>
+    <h1 class="tool-title">
+      <span class="tool-icon">📝</span>
+      <span>Quick Notes</span>
+    </h1>
+    <div class="header-actions">
+      <button class="icon-btn" id="exportBtn" title="تصدير الكل">📤</button>
+      <button class="icon-btn" id="newNoteBtn" title="ملاحظة جديدة">➕</button>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="notes-app">
+
+    <!-- الشريط الجانبي -->
+    <aside class="sidebar">
+
+      <!-- البحث -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث في الملاحظات..." autocomplete="off">
+        <button class="clear-search hidden" id="clearSearch">✕</button>
+      </div>
+
+      <!-- الفلاتر -->
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">
+          <span>📋</span>
+          <span>الكل</span>
+          <span class="filter-count" id="countAll">0</span>
+        </button>
+        <button class="filter-btn" data-filter="pinned">
+          <span>📌</span>
+          <span>مثبّت</span>
+          <span class="filter-count" id="countPinned">0</span>
+        </button>
+      </div>
+
+      <!-- الفئات -->
+      <div class="categories">
+        <h3 class="sidebar-title">🏷️ الفئات</h3>
+        <button class="category-btn" data-category="all">
+          <span class="cat-dot" style="background: #94a3b8;"></span>
+          <span>الكل</span>
+        </button>
+        <button class="category-btn" data-category="personal">
+          <span class="cat-dot" style="background: #ec4899;"></span>
+          <span>شخصي</span>
+        </button>
+        <button class="category-btn" data-category="work">
+          <span class="cat-dot" style="background: #3b82f6;"></span>
+          <span>عمل</span>
+        </button>
+        <button class="category-btn" data-category="ideas">
+          <span class="cat-dot" style="background: #f59e0b;"></span>
+          <span>أفكار</span>
+        </button>
+        <button class="category-btn" data-category="todos">
+          <span class="cat-dot" style="background: #10b981;"></span>
+          <span>مهام</span>
+        </button>
+        <button class="category-btn" data-category="other">
+          <span class="cat-dot" style="background: #8b5cf6;"></span>
+          <span>أخرى</span>
+        </button>
+      </div>
+
+      <!-- قائمة الملاحظات -->
+      <div class="notes-list" id="notesList">
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>لا توجد ملاحظات بعد</p>
+          <button class="empty-btn" id="emptyNewBtn">+ أنشئ أول ملاحظة</button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- منطقة التحرير -->
+    <section class="editor-area">
+
+      <!-- ترحيب (يظهر لما مفيش ملاحظة مفتوحة) -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-icon">📝</div>
+        <h2>أهلاً بك في Quick Notes</h2>
+        <p>اختر ملاحظة من القائمة أو أنشئ ملاحظة جديدة</p>
+        <button class="welcome-btn" id="welcomeNewBtn">+ ملاحظة جديدة</button>
+        <div class="features-list">
+          <div class="feature"><span>✍️</span> دعم كامل لـ Markdown</div>
+          <div class="feature"><span>💾</span> حفظ تلقائي فوري</div>
+          <div class="feature"><span>📌</span> تثبيت الملاحظات المهمة</div>
+          <div class="feature"><span>🔍</span> بحث سريع في كل المحتوى</div>
+        </div>
+      </div>
+
+      <!-- محرر الملاحظة -->
+      <div class="note-editor hidden" id="noteEditor">
+
+        <!-- شريط الأدوات -->
+        <div class="editor-toolbar">
+          <input type="text" id="noteTitle" class="note-title-input" placeholder="عنوان الملاحظة...">
+
+          <div class="toolbar-actions">
+            <select id="noteCategory" class="category-select">
+              <option value="personal">🌸 شخصي</option>
+              <option value="work">💼 عمل</option>
+              <option value="ideas">💡 أفكار</option>
+              <option value="todos">✅ مهام</option>
+              <option value="other">📌 أخرى</option>
+            </select>
+
+            <button class="tool-btn" id="pinBtn" title="تثبيت">📌</button>
+            <button class="tool-btn" id="copyBtn" title="نسخ">📋</button>
+            <button class="tool-btn delete" id="deleteBtn" title="حذف">🗑️</button>
+          </div>
+        </div>
+
+        <!-- أزرار وضع العرض -->
+        <div class="view-modes">
+          <button class="mode-btn active" data-mode="split">
+            <span>⚡</span>
+            <span>جنباً إلى جنب</span>
+          </button>
+          <button class="mode-btn" data-mode="edit">
+            <span>✍️</span>
+            <span>محرر فقط</span>
+          </button>
+          <button class="mode-btn" data-mode="preview">
+            <span>👁️</span>
+            <span>معاينة فقط</span>
+          </button>
+        </div>
+
+        <!-- أدوات Markdown سريعة -->
+        <div class="markdown-toolbar">
+          <button class="md-btn" data-md="bold" title="عريض">
+            <strong>B</strong>
+          </button>
+          <button class="md-btn" data-md="italic" title="مائل">
+            <em>I</em>
+          </button>
+          <button class="md-btn" data-md="heading" title="عنوان">
+            <span>H</span>
+          </button>
+          <button class="md-btn" data-md="list" title="قائمة">
+            <span>•</span>
+          </button>
+          <button class="md-btn" data-md="numbered" title="قائمة مرقمة">
+            <span>1.</span>
+          </button>
+          <button class="md-btn" data-md="check" title="قائمة مهام">
+            <span>☑</span>
+          </button>
+          <button class="md-btn" data-md="quote" title="اقتباس">
+            <span>"</span>
+          </button>
+          <button class="md-btn" data-md="code" title="كود">
+            <span>&lt;/&gt;</span>
+          </button>
+          <button class="md-btn" data-md="link" title="رابط">
+            <span>🔗</span>
+          </button>
+          <button class="md-btn" data-md="line" title="خط">
+            <span>—</span>
+          </button>
+        </div>
+
+        <!-- المحرر والمعاينة -->
+        <div class="editor-content" id="editorContent">
+
+          <!-- المحرر -->
+          <div class="editor-pane">
+            <textarea id="noteContent" placeholder="ابدأ الكتابة هنا... استخدم Markdown لتنسيق النص
+
+أمثلة:
+# عنوان كبير
+## عنوان فرعي
+**نص عريض**
+*نص مائل*
+- قائمة
+1. قائمة مرقمة
+- [ ] مهمة غير منفذة
+- [x] مهمة منفذة
+> اقتباس
+`كود`
+[رابط](https://example.com)
+---"></textarea>
+          </div>
+
+          <!-- المعاينة -->
+          <div class="preview-pane" id="previewPane">
+            <div class="preview-empty">المعاينة ستظهر هنا...</div>
+          </div>
+
+        </div>
+
+        <!-- شريط الحالة -->
+        <div class="editor-status">
+          <span class="status-info">
+            <span id="wordCount">0 كلمة</span>
+            <span class="dot-separator">•</span>
+            <span id="charCount">0 حرف</span>
+          </span>
+          <span class="save-status" id="saveStatus">💾 محفوظ</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- السكريبت -->
+   <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

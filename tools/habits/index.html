@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Streak — LifeHub</title>
+  <meta
+    name="description"
+    content="Habit Streak داخل LifeHub — ابنِ عادات قوية بنظام Streak ناري، تقويم ملون، شارات إنجاز، وتأثيرات حماسية"
+  />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Global -->
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/tour.css" />
+
+  <!-- Tool CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-glow"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="tool-header">
+    <div class="header-side">
+      <a href="../../index.html" class="back-btn">
+        <span>←</span>
+        <span>العودة</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <h1 class="tool-title">
+        <span class="tool-icon">🎯</span>
+        <span>Habit Streak</span>
+      </h1>
+      <p class="tool-subtitle">كل يوم التزام = نار أقوى = Streak أطول 🔥</p>
+    </div>
+
+    <div class="header-side header-actions">
+      <button class="ghost-btn" id="insightsBtn" type="button">
+        <span>📊</span>
+        <span>التقارير</span>
+      </button>
+
+      <button class="ghost-btn" id="badgesBtn" type="button">
+        <span>🏆</span>
+        <span>الإنجازات</span>
+      </button>
+
+      <button class="ghost-btn primary" id="addHabitBtn" type="button">
+        <span>➕</span>
+        <span>عادة جديدة</span>
+      </button>
+
+      <!-- ✅ تم إضافة نص افتراضي للزر -->
+      <button data-tour="habits" aria-label="جولة تفاعلية">!</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="tool-shell">
+    <!-- Hero -->
+    <section class="hero-card">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <p class="eyebrow">Daily Momentum</p>
+          <h2 class="hero-title">
+            ابنِ عادات
+            <span class="hero-gradient">تكبر يوم بعد يوم</span>
+          </h2>
+          <p class="hero-description">
+            أداة عادة يومية مستلهمة من أفضل تطبيقات الـ streaks:
+            تقويم مرئي، إنجازات، progress، حالات نفسية، وتأثيرات تخليك
+            تحافظ على الاستمرارية.
+          </p>
+        </div>
+
+        <div class="streak-hero-card">
+          <div class="streak-flame" id="heroFlame">🔥</div>
+          <div class="streak-hero-copy">
+            <span class="streak-hero-label">أفضل Streak حالي</span>
+            <strong class="streak-hero-value" id="bestStreakHero">0</strong>
+            <span class="streak-hero-sub">استمرارية اليوم تصنع أسطورة بكرة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🎯</span>
+          <div>
+            <div class="hero-stat-value" id="totalHabits">0</div>
+            <div class="hero-stat-label">عادة نشطة</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🔥</span>
+          <div>
+            <div class="hero-stat-value" id="bestStreak">0</div>
+            <div class="hero-stat-label">أعلى Streak</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">✅</span>
+          <div>
+            <div class="hero-stat-value" id="todayDone">0</div>
+            <div class="hero-stat-label">منجز اليوم</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🏆</span>
+          <div>
+            <div class="hero-stat-value" id="totalBadges">0</div>
+            <div class="hero-stat-label">إنجاز مفتوح</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Layout -->
+    <div class="tool-layout">
+      <!-- Main column -->
+      <section class="main-column">
+        <!-- Habits Panel -->
+        <section class="panel habits-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">My Habits</p>
+              <h3 class="panel-title">عاداتي اليومية</h3>
+            </div>
+
+            <div class="panel-actions">
+              <button class="text-btn" id="completeAllBtn" type="button">✅ إنجاز الكل</button>
+              <span class="live-pill" id="completionSummary">0 / 0 اليوم</span>
+            </div>
+          </div>
+
+          <div class="toolbar-row">
+            <div class="filter-buttons">
+              <button class="filter-btn active" data-filter="all" type="button">الكل</button>
+              <button class="filter-btn" data-filter="today" type="button">لم تُنجز</button>
+              <button class="filter-btn" data-filter="done" type="button">منجز اليوم</button>
+              <button class="filter-btn" data-filter="broken" type="button">Streak مكسور</button>
+            </div>
+
+            <div class="sort-switcher">
+              <button class="sort-btn active" data-sort="manual" type="button">الترتيب اليدوي</button>
+              <button class="sort-btn" data-sort="streak" type="button">حسب الـ Streak</button>
+            </div>
+          </div>
+
+          <div class="habits-list" id="habitsList">
+            <div class="empty-state">
+              <div class="empty-icon">🎯</div>
+              <h3 class="empty-title">ابدأ أول عادة</h3>
+              <p class="empty-desc">كل عادة صغيرة ممكن تبقى نقطة تحول ضخمة</p>
+              <button class="empty-btn" id="emptyAddBtn" type="button">+ أضف أول عادة</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Weekly Heatmap -->
+        <section class="panel heatmap-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Consistency View</p>
+              <h3 class="panel-title">تقويم الالتزام</h3>
+            </div>
+
+            <span class="live-pill alt" id="heatmapLabel">آخر 30 يوم</span>
+          </div>
+
+          <div class="heatmap-overview">
+            <div class="heatmap-stats">
+              <div class="heat-stat">
+                <span class="heat-stat-label">أيام نشاط</span>
+                <strong class="heat-stat-value" id="activeDaysCount">0</strong>
+              </div>
+
+              <div class="heat-stat">
+                <span class="heat-stat-label">معدل الالتزام</span>
+                <strong class="heat-stat-value" id="consistencyRate">0%</strong>
+              </div>
+
+              <div class="heat-stat">
+                <span class="heat-stat-label">أقوى سلسلة</span>
+                <strong class="heat-stat-value" id="bestConsistency">0</strong>
+              </div>
+            </div>
+
+            <div class="heatmap-grid-wrap">
+              <div class="heatmap-grid" id="heatmapGrid">
+                <!-- JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Side column -->
+      <aside class="side-column">
+        <!-- Mood Panel -->
+        <section class="panel mood-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Habit Mood</p>
+              <h3 class="panel-title">حالة التزامك</h3>
+            </div>
+
+            <span class="quality-badge" id="moodBadge">متحمس</span>
+          </div>
+
+          <div class="mood-box">
+            <div class="mood-face" id="moodFace">😎</div>
+            <div class="mood-copy">
+              <p class="mood-title" id="moodTitle">بداية جميلة</p>
+              <p class="mood-desc" id="moodDesc">
+                حافظ على رتمك، يوم واحد كمان ممكن يفتح أول إنجاز.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Badges Preview -->
+        <section class="panel badges-preview-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Achievements</p>
+              <h3 class="panel-title">شاراتك</h3>
+            </div>
+
+            <span class="live-pill" id="earnedBadgesPreview">0 مفتوح</span>
+          </div>
+
+          <div class="badges-preview-grid" id="badgesGrid">
+            <!-- JS -->
+          </div>
+        </section>
+
+        <!-- Streak Board -->
+        <section class="panel streak-board-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Top Habits</p>
+              <h3 class="panel-title">لوحة الـ Streak</h3>
+            </div>
+          </div>
+
+          <div class="streak-board" id="streakBoard">
+            <div class="empty-state compact">
+              <div class="empty-icon">🔥</div>
+              <p class="empty-title">لا توجد عادات بعد</p>
+              <p class="empty-desc">أضف عادة عشان تظهر في لوحة الترتيب</p>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal hidden" id="habitModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Create Habit</p>
+          <h3 class="modal-title" id="modalTitle">➕ عادة جديدة</h3>
+        </div>
+        <button class="close-modal" id="closeModal" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="habitName">📝 اسم العادة</label>
+          <input
+            type="text"
+            id="habitName"
+            class="text-input"
+            placeholder="مثال: قراءة 20 دقيقة"
+            maxlength="60"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="habitTarget">🎯 الهدف اليومي</label>
+          <div class="target-row">
+            <input
+              type="number"
+              id="habitTarget"
+              class="text-input"
+              min="1"
+              max="20"
+              value="1"
+            />
+            <select id="habitUnit" class="select-input">
+              <option value="مرة">مرة</option>
+              <option value="صفحة">صفحة</option>
+              <option value="دقيقة">دقيقة</option>
+              <option value="جلسة">جلسة</option>
+              <option value="كوب">كوب</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🎨 اختر أيقونة</label>
+          <div class="icons-picker" id="iconsPicker">
+            <button class="icon-pick" data-icon="📖" type="button">📖</button>
+            <button class="icon-pick" data-icon="💪" type="button">💪</button>
+            <button class="icon-pick" data-icon="🏃" type="button">🏃</button>
+            <button class="icon-pick" data-icon="🧘" type="button">🧘</button>
+            <button class="icon-pick" data-icon="💧" type="button">💧</button>
+            <button class="icon-pick" data-icon="🥗" type="button">🥗</button>
+            <button class="icon-pick" data-icon="😴" type="button">😴</button>
+            <button class="icon-pick" data-icon="📚" type="button">📚</button>
+            <button class="icon-pick" data-icon="✍️" type="button">✍️</button>
+            <button class="icon-pick" data-icon="🎨" type="button">🎨</button>
+            <button class="icon-pick" data-icon="🎵" type="button">🎵</button>
+            <button class="icon-pick" data-icon="🌅" type="button">🌅</button>
+            <button class="icon-pick" data-icon="🙏" type="button">🙏</button>
+            <button class="icon-pick" data-icon="💻" type="button">💻</button>
+            <button class="icon-pick" data-icon="🚭" type="button">🚭</button>
+            <button class="icon-pick" data-icon="☕" type="button">☕</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🌈 اختر لون</label>
+          <div class="colors-picker" id="colorsPicker">
+            <button class="color-pick" data-color="#ef4444" style="background:#ef4444" type="button"></button>
+            <button class="color-pick" data-color="#f59e0b" style="background:#f59e0b" type="button"></button>
+            <button class="color-pick" data-color="#10b981" style="background:#10b981" type="button"></button>
+            <button class="color-pick" data-color="#06b6d4" style="background:#06b6d4" type="button"></button>
+            <button class="color-pick" data-color="#3b82f6" style="background:#3b82f6" type="button"></button>
+            <button class="color-pick" data-color="#8b5cf6" style="background:#8b5cf6" type="button"></button>
+            <button class="color-pick" data-color="#ec4899" style="background:#ec4899" type="button"></button>
+            <button class="color-pick" data-color="#f97316" style="background:#f97316" type="button"></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🧠 إعدادات إضافية</label>
+          <div class="toggle-grid">
+            <label class="toggle-row">
+              <input type="checkbox" id="habitStrictMode" checked />
+              <span>اكسر الـ streak لو فات يوم</span>
+            </label>
+
+            <label class="toggle-row">
+              <input type="checkbox" id="habitShowInBoard" checked />
+              <span>إظهارها في لوحة الترتيب</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="save-btn" id="saveHabit" type="button">💾 حفظ العادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details Modal -->
+  <div class="modal hidden" id="detailsModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Habit Details</p>
+          <h3 class="modal-title" id="detailsTitle">📊 تفاصيل العادة</h3>
+        </div>
+        <button class="close-modal" id="closeDetails" type="button">✕</button>
+      </div>
+
+      <div class="modal-body" id="detailsBody">
+        <!-- JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights Modal -->
+  <div class="modal hidden" id="insightsModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Insights</p>
+          <h3 class="modal-title">📈 التقارير</h3>
+        </div>
+        <button class="close-modal" id="closeInsights" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="insights-grid">
+          <div class="insight-card">
+            <span class="insight-icon">🔥</span>
+            <strong id="insightBestStreak">0</strong>
+            <span>أفضل Streak</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-icon">📅</span>
+            <strong id="insightActiveDays">0</strong>
+            <span>أيام نشطة</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-icon">✅</span>
+            <strong id="insightCompletionRate">0%</strong>
+            <span>معدل الالتزام</span>
+          </div>
+
+          <div class="insight-card">
+            <span class="insight-icon">🏆</span>
+            <strong id="insightEarnedBadges">0</strong>
+            <span>شارات مفتوحة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <footer class="status-bar">
+    <div class="status-message" id="statusMessage">✅ جاهز! ابدأ ببناء عاداتك</div>
+    <div class="status-shortcuts">
+      <span>N = عادة جديدة</span>
+      <span>F = فلتر</span>
+      <span>Esc = إغلاق</span>
+    </div>
+  </footer>
+
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

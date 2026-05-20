@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Generator — LifeHub</title>
+  <meta
+    name="description"
+    content="مولد كلمات مرور احترافي داخل LifeHub — قوي، سريع، محلي، وبتقييم أمان بصري ذكي"
+  />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/tour.css" />
+
+  <!-- Tool CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-glow"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="tool-header">
+    <div class="header-side">
+      <a href="../../index.html" class="back-btn">
+        <span>←</span>
+        <span>العودة</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <h1 class="tool-title">
+        <span class="tool-icon">🔐</span>
+        <span>Password Generator</span>
+      </h1>
+      <p class="tool-subtitle">مولد احترافي مستلهم من أفضل أدوات الأمان الحديثة</p>
+    </div>
+
+    <div class="header-side header-actions">
+      <button class="ghost-btn" id="historyToggleBtn" type="button">
+        <span>📋</span>
+        <span>السجل</span>
+      </button>
+
+      <button class="ghost-btn" id="surpriseBtn" type="button">
+        <span>🎲</span>
+        <span>مفاجأة</span>
+      </button>
+
+      <!-- ✅ تم إضافة نص افتراضي للزر -->
+      <button data-tour="password" aria-label="جولة تفاعلية">!</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="tool-shell">
+    <!-- Hero -->
+    <section class="hero-card">
+      <div class="hero-badge-row">
+        <span class="hero-badge">🛡️ Local First</span>
+        <span class="hero-badge">⚡ Instant Generate</span>
+        <span class="hero-badge">🎯 Security Insights</span>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="eyebrow">أمان بصري + تجربة حديثة</p>
+          <h2 class="hero-title">
+            أنشئ كلمات مرور
+            <span class="hero-gradient">قوية جدًا</span>
+            في ثانية واحدة
+          </h2>
+          <p class="hero-description">
+            طول مخصص، رموز وأرقام، استبعاد الأحرف المربكة، قياس قوة فوري،
+            وHistory مؤقت داخل الجلسة فقط.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span class="mini-stat-label">آخر تقييم</span>
+            <strong class="mini-stat-value" id="heroScore">0/100</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">Entropy</span>
+            <strong class="mini-stat-value" id="heroEntropy">0 bit</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-stat-label">تم توليدها</span>
+            <strong class="mini-stat-value" id="heroGenerated">0</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tool-layout">
+      <!-- Main Column -->
+      <section class="main-column">
+        <!-- Password Output -->
+        <section class="panel password-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">كلمة المرور الحالية</p>
+              <h3 class="panel-title">Output جاهز للنسخ والاستخدام</h3>
+            </div>
+
+            <div class="panel-actions">
+              <button class="soft-btn" id="toggleVisibilityBtn" type="button" title="إظهار / إخفاء">
+                👁️
+              </button>
+              <button class="soft-btn" id="regenerateBtnTop" type="button" title="توليد جديد">
+                🔄
+              </button>
+            </div>
+          </div>
+
+          <div class="password-display" id="passwordDisplay">
+            <div class="password-meta">
+              <span class="password-chip" id="passwordModeChip">Balanced</span>
+              <span class="password-chip" id="passwordPoolChip">Pool: 0</span>
+            </div>
+
+            <div class="password-text-wrap">
+              <div class="password-text" id="passwordText">اضغط توليد ✨</div>
+            </div>
+
+            <div class="password-actions">
+              <button class="action-btn copy-btn" id="copyBtn" type="button" title="نسخ">
+                <span id="copyIcon">📋</span>
+                <span>نسخ</span>
+              </button>
+
+              <button class="action-btn generate-btn" id="generateBtn" type="button" title="توليد جديد">
+                <span>🔐</span>
+                <span>توليد</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Strength -->
+          <div class="strength-card">
+            <div class="strength-top">
+              <div class="strength-main">
+                <p class="eyebrow">تحليل القوة</p>
+                <div class="strength-heading">
+                  <span class="strength-score" id="strengthScore">0</span>
+                  <span class="strength-divider">/100</span>
+                  <span class="strength-label" id="strengthLabel">—</span>
+                </div>
+              </div>
+
+              <div class="strength-side">
+                <span class="strength-side-label">وقت الاختراق التقديري</span>
+                <strong class="crack-time" id="crackTime">—</strong>
+              </div>
+            </div>
+
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <span class="metric-label">الطول</span>
+                <strong class="metric-value" id="statLength">16</strong>
+              </div>
+
+              <div class="metric-card">
+                <span class="metric-label">التنوع</span>
+                <strong class="metric-value" id="statVariety">0/4</strong>
+              </div>
+
+              <div class="metric-card">
+                <span class="metric-label">Entropy</span>
+                <strong class="metric-value" id="statEntropy">0 bit</strong>
+              </div>
+
+              <div class="metric-card">
+                <span class="metric-label">المولدات</span>
+                <strong class="metric-value" id="statGenerated">0</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="panel controls-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">تحكم كامل</p>
+              <h3 class="panel-title">إعدادات التوليد</h3>
+            </div>
+
+            <span class="live-pill">يتحدث تلقائياً</span>
+          </div>
+
+          <!-- Length -->
+          <div class="control-group">
+            <div class="control-row">
+              <label class="control-label" for="lengthSlider">📏 الطول</label>
+              <span class="value-pill" id="lengthValue">16</span>
+            </div>
+
+            <input
+              type="range"
+              id="lengthSlider"
+              class="slider"
+              min="6"
+              max="64"
+              value="16"
+            />
+
+            <div class="slider-marks">
+              <span>6</span>
+              <span>16</span>
+              <span>24</span>
+              <span>32</span>
+              <span>64</span>
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <div class="control-group">
+            <div class="control-row">
+              <label class="control-label">⚡ Presets</label>
+              <button class="text-btn" id="randomPresetBtn" type="button">اختيار تلقائي</button>
+            </div>
+
+            <div class="presets">
+              <button class="preset-btn" data-preset="pin" type="button">🔢 PIN</button>
+              <button class="preset-btn active" data-preset="balanced" type="button">✨ Balanced</button>
+              <button class="preset-btn" data-preset="strong" type="button">💪 Strong</button>
+              <button class="preset-btn" data-preset="fortress" type="button">🏰 Fortress</button>
+              <button class="preset-btn" data-preset="memorable" type="button">🧠 Memorable</button>
+            </div>
+          </div>
+
+          <!-- Character Types -->
+          <div class="control-group">
+            <label class="control-label">🔤 أنواع الأحرف</label>
+
+            <div class="types-grid">
+              <button class="type-card active" data-type="uppercase" type="button">
+                <span class="type-icon">A-Z</span>
+                <span class="type-name">أحرف كبيرة</span>
+                <span class="type-example">ABCDEFG</span>
+              </button>
+
+              <button class="type-card active" data-type="lowercase" type="button">
+                <span class="type-icon">a-z</span>
+                <span class="type-name">أحرف صغيرة</span>
+                <span class="type-example">abcdefg</span>
+              </button>
+
+              <button class="type-card active" data-type="numbers" type="button">
+                <span class="type-icon">0-9</span>
+                <span class="type-name">أرقام</span>
+                <span class="type-example">0123456</span>
+              </button>
+
+              <button class="type-card active" data-type="symbols" type="button">
+                <span class="type-icon">!@#</span>
+                <span class="type-name">رموز</span>
+                <span class="type-example">!@#$%^&</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Smart Options -->
+          <div class="control-group">
+            <label class="control-label">🧠 إعدادات ذكية</label>
+
+            <div class="switch-grid">
+              <label class="switch-card">
+                <input type="checkbox" id="requireEachType" checked />
+                <div class="switch-copy">
+                  <strong>تضمين كل نوع</strong>
+                  <span>لو فعلت 4 أنواع، كلمة المرور تحتوي عليهم كلهم</span>
+                </div>
+              </label>
+
+              <label class="switch-card">
+                <input type="checkbox" id="excludeSimilar" checked />
+                <div class="switch-copy">
+                  <strong>استبعاد الأحرف المتشابهة</strong>
+                  <span>مثل O / 0 / l / I علشان القراءة تبقى أوضح</span>
+                </div>
+              </label>
+
+              <label class="switch-card">
+                <input type="checkbox" id="avoidDuplicates" />
+                <div class="switch-copy">
+                  <strong>تقليل التكرار</strong>
+                  <span>يحاول يقلل تكرار نفس الحرف قدر الإمكان</span>
+                </div>
+              </label>
+
+              <label class="switch-card">
+                <input type="checkbox" id="autoCopy" />
+                <div class="switch-copy">
+                  <strong>نسخ تلقائي بعد التوليد</strong>
+                  <span>مفيد لو عايز السرعة القصوى</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Custom Inputs -->
+          <div class="control-group">
+            <div class="two-col-grid">
+              <div class="field-box">
+                <label class="control-label" for="excludeChars">🚫 استبعاد أحرف يدوي</label>
+                <input
+                  type="text"
+                  id="excludeChars"
+                  class="text-input"
+                  placeholder="مثال: 0Ol1I"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
+
+              <div class="field-box">
+                <label class="control-label" for="minUniqueChars">🎯 أقل عدد أحرف مختلفة</label>
+                <input
+                  type="number"
+                  id="minUniqueChars"
+                  class="text-input"
+                  min="1"
+                  max="64"
+                  value="8"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Side Column -->
+      <aside class="side-column">
+        <!-- Quality Checklist -->
+        <section class="panel quality-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Security Checklist</p>
+              <h3 class="panel-title">فحص الجودة</h3>
+            </div>
+
+            <span class="quality-badge" id="qualityBadge">جاهز</span>
+          </div>
+
+          <ul class="quality-list">
+            <li class="quality-item pending" id="checkLength">
+              <span class="quality-icon">○</span>
+              <span>طول مناسب 12+ حرف</span>
+            </li>
+
+            <li class="quality-item pending" id="checkTypes">
+              <span class="quality-icon">○</span>
+              <span>تنوع محترم في الأنواع</span>
+            </li>
+
+            <li class="quality-item pending" id="checkUnique">
+              <span class="quality-icon">○</span>
+              <span>عدد جيد من الأحرف المختلفة</span>
+            </li>
+
+            <li class="quality-item pending" id="checkEntropy">
+              <span class="quality-icon">○</span>
+              <span>Entropy قوي</span>
+            </li>
+
+            <li class="quality-item pending" id="checkSymbols">
+              <span class="quality-icon">○</span>
+              <span>وجود رموز أو أرقام يرفع الأمان</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Distribution -->
+        <section class="panel distribution-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Character Mix</p>
+              <h3 class="panel-title">توزيع الأحرف</h3>
+            </div>
+
+            <span class="pool-badge" id="poolSizeBadge">Pool: 0</span>
+          </div>
+
+          <div class="distribution-list">
+            <div class="distribution-item">
+              <div class="distribution-meta">
+                <span>أحرف كبيرة</span>
+                <strong id="countUppercase">0</strong>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill uppercase" id="barUppercase"></div>
+              </div>
+            </div>
+
+            <div class="distribution-item">
+              <div class="distribution-meta">
+                <span>أحرف صغيرة</span>
+                <strong id="countLowercase">0</strong>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill lowercase" id="barLowercase"></div>
+              </div>
+            </div>
+
+            <div class="distribution-item">
+              <div class="distribution-meta">
+                <span>أرقام</span>
+                <strong id="countNumbers">0</strong>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill numbers" id="barNumbers"></div>
+              </div>
+            </div>
+
+            <div class="distribution-item">
+              <div class="distribution-meta">
+                <span>رموز</span>
+                <strong id="countSymbols">0</strong>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill symbols" id="barSymbols"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- History -->
+        <section class="panel history-panel" id="historyPanel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Session Only</p>
+              <h3 class="panel-title">آخر 10 كلمات مرور</h3>
+            </div>
+
+            <button class="text-btn danger" id="clearHistoryBtn" type="button">مسح</button>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <div class="empty-state">
+              <div class="empty-icon">📭</div>
+              <p class="empty-title">لسه مفيش سجل</p>
+              <p class="empty-desc">أول ما تولّد كلمات مرور هتظهر هنا فورًا</p>
+            </div>
+          </div>
+
+          <p class="history-note">
+            ⚠️ السجل مؤقت داخل الجلسة الحالية فقط، ومش بيتحفظ بشكل دائم.
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer Status -->
+  <footer class="status-bar">
+    <div class="status-message" id="statusMessage">✅ جاهز للتوليد</div>
+
+    <div class="status-shortcuts">
+      <span>Space = توليد</span>
+      <span>Ctrl/Cmd + C = نسخ</span>
+      <span>H = السجل</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

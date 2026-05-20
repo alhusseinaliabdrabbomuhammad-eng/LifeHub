@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dice & Random — LifeHub</title>
+  <meta
+    name="description"
+    content="Dice & Random داخل LifeHub — نرد ثلاثي الأبعاد، عملة، عجلة حظ، اختيار عشوائي، أرقام، وسحب بطاقة"
+  />
+
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="%230b1220"/><text x="32" y="42" font-size="32" text-anchor="middle">🎲</text></svg>'
+    type="image/svg+xml"
+  />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Global -->
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/tour.css" />
+
+  <!-- Tool CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-glow"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="tool-header">
+    <div class="header-side">
+      <a href="../../index.html" class="back-btn">
+        <span>←</span>
+        <span>العودة</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <h1 class="tool-title">
+        <span class="tool-icon">🎲</span>
+        <span>Dice & Random</span>
+      </h1>
+      <p class="tool-subtitle">كل أدوات الحظ والعشوائية في مكان واحد 🎰</p>
+    </div>
+
+    <div class="header-side header-actions">
+      <div class="header-stats">
+        <span class="stats-chip">
+          <span>🎯 إجمالي الاستخدام</span>
+          <strong id="totalRolls">0</strong>
+        </span>
+      </div>
+
+      <button data-tour="random" aria-label="جولة تفاعلية"></button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="tool-shell">
+    <!-- Hero -->
+    <section class="hero-card">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <p class="eyebrow">Playful Random Toolkit</p>
+          <h2 class="hero-title">
+            اختيارات عشوائية
+            <span class="hero-gradient">بطريقة ممتعة جدًا</span>
+          </h2>
+          <p class="hero-description">
+            نرد، عملة، عجلة قرارات، picker، مولد أرقام، وكروت لعب —
+            كله متصمم بتجربة مرئية لطيفة وسريعة وممتعة.
+          </p>
+        </div>
+
+        <div class="hero-mini-stats">
+          <div class="mini-stat">
+            <span class="mini-stat-label">آخر نتيجة</span>
+            <strong class="mini-stat-value" id="heroLastResult">—</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span class="mini-stat-label">الأداة الحالية</span>
+            <strong class="mini-stat-value" id="heroCurrentTool">نرد</strong>
+          </div>
+
+          <div class="mini-stat">
+            <span class="mini-stat-label">المفضلة</span>
+            <strong class="mini-stat-value" id="heroFavoriteTool">🎲</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="dice" type="button">🎲 نرد</button>
+      <button class="tab" data-tab="coin" type="button">🪙 عملة</button>
+      <button class="tab" data-tab="wheel" type="button">🎰 عجلة</button>
+      <button class="tab" data-tab="picker" type="button">🎯 اختيار</button>
+      <button class="tab" data-tab="number" type="button">🔢 أرقام</button>
+      <button class="tab" data-tab="card" type="button">🎴 بطاقة</button>
+    </nav>
+
+    <!-- Panels -->
+    <div class="panels-wrap">
+      <!-- Dice -->
+      <section class="panel active" id="dicePanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">3D Dice</p>
+            <h3 class="panel-title">ارمِ النرد</h3>
+          </div>
+
+          <span class="live-pill" id="diceState">جاهز للرمي</span>
+        </div>
+
+        <div class="dice-layout">
+          <div class="dice-stage">
+            <div class="dice-container">
+              <div class="dice-scene">
+                <div class="dice" id="dice">
+                  <div class="dice-face face-1">
+                    <span class="dot center"></span>
+                  </div>
+
+                  <div class="dice-face face-2">
+                    <span class="dot top-left"></span>
+                    <span class="dot bottom-right"></span>
+                  </div>
+
+                  <div class="dice-face face-3">
+                    <span class="dot top-left"></span>
+                    <span class="dot center"></span>
+                    <span class="dot bottom-right"></span>
+                  </div>
+
+                  <div class="dice-face face-4">
+                    <span class="dot top-left"></span>
+                    <span class="dot top-right"></span>
+                    <span class="dot bottom-left"></span>
+                    <span class="dot bottom-right"></span>
+                  </div>
+
+                  <div class="dice-face face-5">
+                    <span class="dot top-left"></span>
+                    <span class="dot top-right"></span>
+                    <span class="dot center"></span>
+                    <span class="dot bottom-left"></span>
+                    <span class="dot bottom-right"></span>
+                  </div>
+
+                  <div class="dice-face face-6">
+                    <span class="dot top-left"></span>
+                    <span class="dot top-right"></span>
+                    <span class="dot mid-left"></span>
+                    <span class="dot mid-right"></span>
+                    <span class="dot bottom-left"></span>
+                    <span class="dot bottom-right"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="multi-dice-tray" id="multiDiceTray"></div>
+          </div>
+
+          <div class="tool-side-card">
+            <div class="dice-count">
+              <label class="side-label">عدد النرد</label>
+              <div class="counter">
+                <button class="counter-btn" id="diceCountMinus" type="button">−</button>
+                <span class="counter-value" id="diceCount">1</span>
+                <button class="counter-btn" id="diceCountPlus" type="button">+</button>
+              </div>
+            </div>
+
+            <button class="action-btn primary" id="rollDiceBtn" type="button">
+              <span>🎲</span>
+              <span>ارمِ النرد</span>
+            </button>
+
+            <div class="result-card">
+              <p class="result-label">المجموع</p>
+              <p class="result-value" id="diceTotal">—</p>
+              <div class="result-sub" id="diceBreakdown">في انتظار الرمية</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Coin -->
+      <section class="panel" id="coinPanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Coin Flip</p>
+            <h3 class="panel-title">ارمِ العملة</h3>
+          </div>
+
+          <span class="live-pill" id="coinState">اختَر وجه الحظ</span>
+        </div>
+
+        <div class="coin-layout">
+          <div class="coin-stage">
+            <div class="coin-container">
+              <div class="coin" id="coin">
+                <div class="coin-side coin-heads">
+                  <span class="coin-icon">👑</span>
+                  <span class="coin-text">ملك</span>
+                </div>
+
+                <div class="coin-side coin-tails">
+                  <span class="coin-icon">🦅</span>
+                  <span class="coin-text">كتابة</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-side-card">
+            <button class="action-btn primary" id="flipCoinBtn" type="button">
+              <span>🪙</span>
+              <span>اقلب العملة</span>
+            </button>
+
+            <div class="coin-stats">
+              <div class="stat-box">
+                <span class="stat-icon">👑</span>
+                <span class="stat-label">ملك</span>
+                <strong class="stat-value" id="headsCount">0</strong>
+              </div>
+
+              <div class="stat-box">
+                <span class="stat-icon">🦅</span>
+                <span class="stat-label">كتابة</span>
+                <strong class="stat-value" id="tailsCount">0</strong>
+              </div>
+            </div>
+
+            <div class="result-card">
+              <p class="result-label">النتيجة</p>
+              <p class="result-value" id="coinResult">—</p>
+              <div class="result-sub" id="coinSummary">جرّب أول قلبة</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wheel -->
+      <section class="panel" id="wheelPanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Decision Wheel</p>
+            <h3 class="panel-title">عجلة الحظ</h3>
+          </div>
+
+          <span class="live-pill alt" id="entriesCount">0 خيار</span>
+        </div>
+
+        <div class="wheel-layout">
+          <div class="wheel-main">
+            <div class="wheel-wrapper">
+              <div class="wheel-pointer-new">
+                <svg viewBox="0 0 50 60" width="40" height="48" aria-hidden="true">
+                  <path d="M25 55 L5 5 L45 5 Z" fill="#ef4444" stroke="#fff" stroke-width="2"></path>
+                  <circle cx="25" cy="15" r="4" fill="#fff"></circle>
+                </svg>
+              </div>
+
+              <div class="wheel-new" id="wheel"></div>
+
+              <button class="wheel-center-btn" id="wheelCenterBtn" type="button" title="دوّر">
+                <span id="wheelCenterText">دوّر</span>
+              </button>
+            </div>
+
+            <div class="wheel-actions">
+              <button class="action-btn primary" id="spinWheelBtn" type="button">
+                <span>🎡</span>
+                <span>دوّر العجلة</span>
+              </button>
+
+              <button class="icon-action-btn" id="resetWheelBtn" type="button" title="إعادة">
+                🔄
+              </button>
+
+              <button class="icon-action-btn" id="soundToggleBtn" type="button" title="الصوت">
+                <span id="soundIcon">🔊</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="wheel-sidebar">
+            <div class="sidebar-header">
+              <h4>📝 الخيارات</h4>
+              <span class="side-badge" id="wheelCountSmall">0</span>
+            </div>
+
+            <textarea
+              id="wheelOptions"
+              class="options-textarea"
+              placeholder="اكتب كل خيار في سطر:
+أحمد
+محمد
+سارة
+ليلى
+يوسف"
+            >أحمد
+محمد
+سارة
+ليلى
+يوسف
+فاطمة</textarea>
+
+            <div class="sidebar-controls">
+              <button class="sidebar-btn" id="shuffleBtn" type="button">
+                <span>🔀</span>
+                <span>خلط</span>
+              </button>
+
+              <button class="sidebar-btn" id="sortBtn" type="button">
+                <span>🔤</span>
+                <span>ترتيب</span>
+              </button>
+
+              <button class="sidebar-btn danger" id="clearAllBtn" type="button">
+                <span>🗑️</span>
+                <span>مسح</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Picker -->
+      <section class="panel" id="pickerPanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Random Picker</p>
+            <h3 class="panel-title">الاختيار العشوائي</h3>
+          </div>
+
+          <span class="live-pill" id="pickerState">جاهز للاختيار</span>
+        </div>
+
+        <div class="picker-layout">
+          <div class="tool-side-card wide">
+            <label class="side-label" for="pickerOptions">أضف خياراتك — سطر لكل خيار</label>
+            <textarea
+              id="pickerOptions"
+              class="options-textarea large"
+              placeholder="بيتزا
+برجر
+كشري
+فراخ
+سمك"
+            >بيتزا
+برجر
+كشري
+فراخ
+سمك</textarea>
+
+            <button class="action-btn primary" id="pickBtn" type="button">
+              <span>🎯</span>
+              <span>اختر عشوائيًا</span>
+            </button>
+          </div>
+
+          <div class="result-card xl">
+            <p class="result-label">الاختيار</p>
+            <p class="result-value picker-winner" id="pickerWinner">—</p>
+            <div class="result-sub" id="pickerMeta">أدخل الخيارات واضغط اختيار</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Numbers -->
+      <section class="panel" id="numberPanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Number Generator</p>
+            <h3 class="panel-title">مولد الأرقام</h3>
+          </div>
+
+          <span class="live-pill" id="numbersState">اضبط النطاق</span>
+        </div>
+
+        <div class="number-layout">
+          <div class="tool-side-card wide">
+            <div class="number-inputs">
+              <div class="input-group">
+                <label for="minNumber">من</label>
+                <input type="number" id="minNumber" value="1" />
+              </div>
+
+              <div class="input-group">
+                <label for="maxNumber">إلى</label>
+                <input type="number" id="maxNumber" value="100" />
+              </div>
+
+              <div class="input-group">
+                <label for="countNumber">كم رقم</label>
+                <input type="number" id="countNumber" value="1" min="1" max="50" />
+              </div>
+            </div>
+
+            <label class="toggle-label">
+              <input type="checkbox" id="uniqueNumbers" checked />
+              <span>أرقام فريدة بدون تكرار</span>
+            </label>
+
+            <button class="action-btn primary" id="generateNumbersBtn" type="button">
+              <span>🔢</span>
+              <span>ولّد الأرقام</span>
+            </button>
+          </div>
+
+          <div class="result-card xl">
+            <p class="result-label">النتيجة</p>
+            <div class="numbers-list" id="numbersList">—</div>
+            <div class="result-sub" id="numbersMeta">في انتظار التوليد</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card -->
+      <section class="panel" id="cardPanel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Random Card</p>
+            <h3 class="panel-title">اسحب بطاقة</h3>
+          </div>
+
+          <span class="live-pill" id="cardState">52 احتمال</span>
+        </div>
+
+        <div class="card-layout">
+          <div class="card-stage">
+            <div class="card-container">
+              <div class="playing-card" id="playingCard">
+                <div class="card-back">
+                  <div class="card-pattern">🎴</div>
+                </div>
+
+                <div class="card-front">
+                  <div class="card-corner card-top" id="cardTopCorner">
+                    <span id="cardTopValue">A</span>
+                    <span id="cardTopSuit">♠</span>
+                  </div>
+
+                  <div class="card-center" id="cardCenter">♠</div>
+
+                  <div class="card-corner card-bottom" id="cardBottomCorner">
+                    <span id="cardBottomValue">A</span>
+                    <span id="cardBottomSuit">♠</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-side-card">
+            <button class="action-btn primary" id="drawCardBtn" type="button">
+              <span>🎴</span>
+              <span>اسحب بطاقة</span>
+            </button>
+
+            <div class="result-card">
+              <p class="result-label">البطاقة</p>
+              <p class="result-value" id="cardName">—</p>
+              <div class="result-sub" id="cardMeta">جاهزة للسحب</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Winner Modal -->
+  <div class="winner-modal" id="winnerModal">
+    <canvas id="confettiCanvas"></canvas>
+
+    <div class="winner-content">
+      <div class="winner-trophy">🏆</div>
+      <div class="winner-label">الفائز هو</div>
+      <div class="winner-name" id="winnerName">—</div>
+
+      <div class="winner-actions">
+        <button class="winner-btn primary" id="winnerCloseBtn" type="button">
+          <span>✓</span>
+          <span>متابعة</span>
+        </button>
+
+        <button class="winner-btn danger" id="winnerRemoveBtn" type="button">
+          <span>❌</span>
+          <span>إقصاء وإعادة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <footer class="status-bar">
+    <div class="status-message" id="statusMessage">✅ جاهز! اختر أداة وابدأ اللعب</div>
+    <div class="status-shortcuts">
+      <span>1-6 = تبديل الأداة</span>
+      <span>Space = تشغيل</span>
+      <span>Esc = إغلاق</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

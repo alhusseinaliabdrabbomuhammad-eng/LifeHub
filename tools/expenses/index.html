@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Lite Pro - LifeHub</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/variables.css">
+  <link rel="stylesheet" href="../../css/tour.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <!-- شريط علوي -->
+  <header class="tool-header">
+    <!-- ✅ تم إضافة نص افتراضي للزر -->
+    <button data-tour="expenses">!</button>
+    <a href="../../index.html" class="back-btn">
+      <span>←</span>
+      <span>العودة</span>
+    </a>
+    <h1 class="tool-title">
+      <span class="tool-icon">💰</span>
+      <span>Expense Lite Pro</span>
+    </h1>
+    <div class="header-actions">
+      <button class="icon-btn" id="settingsBtn" title="الإعدادات">⚙️</button>
+      <button class="icon-btn" id="exportBtn" title="تصدير">📤</button>
+    </div>
+  </header>
+
+  <!-- التبويبات -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="dashboard">📊 الرئيسية</button>
+    <button class="tab" data-tab="add">➕ إضافة</button>
+    <button class="tab" data-tab="wallets">💳 المحفظات</button>
+    <button class="tab" data-tab="list">📋 السجل</button>
+    <button class="tab" data-tab="charts">📈 التقارير</button>
+    <button class="tab" data-tab="budget">🎯 الميزانية</button>
+  </nav>
+
+  <!-- المحتوى -->
+  <main class="tool-main">
+
+    <!-- ─── الرئيسية ─── -->
+    <section class="panel active" id="dashboardPanel">
+
+      <!-- الرصيد الإجمالي -->
+      <div class="balance-hero">
+        <div class="balance-label">💰 الرصيد الإجمالي</div>
+        <div class="balance-amount" id="totalBalance">0</div>
+        <div class="balance-currency" id="balanceCurrency">ج.م</div>
+        <div class="balance-row">
+          <div class="balance-item income">
+            <span>⬆️</span>
+            <div>
+              <div class="balance-item-label">الدخل</div>
+              <div class="balance-item-value" id="totalIncome">0</div>
+            </div>
+          </div>
+          <div class="balance-item expense">
+            <span>⬇️</span>
+            <div>
+              <div class="balance-item-label">المصاريف</div>
+              <div class="balance-item-value" id="totalExpense">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- إحصائيات سريعة -->
+      <div class="stats-grid">
+        <div class="stat-card today-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-label">مصاريف اليوم</div>
+          <div class="stat-value" id="todayTotal">0</div>
+        </div>
+        <div class="stat-card week-card">
+          <div class="stat-icon">📆</div>
+          <div class="stat-label">هذا الأسبوع</div>
+          <div class="stat-value" id="weekTotal">0</div>
+        </div>
+        <div class="stat-card month-card">
+          <div class="stat-icon">🗓️</div>
+          <div class="stat-label">هذا الشهر</div>
+          <div class="stat-value" id="monthTotal">0</div>
+        </div>
+        <div class="stat-card saving-card">
+          <div class="stat-icon">🐷</div>
+          <div class="stat-label">نسبة الادخار</div>
+          <div class="stat-value" id="savingRate">0%</div>
+        </div>
+      </div>
+
+      <!-- حد أقصى يومي -->
+      <div class="limit-section" id="limitSection">
+        <div class="limit-header">
+          <h3>🎯 الحد الأقصى اليومي</h3>
+          <span class="limit-value" id="limitValue">200 ج.م</span>
+        </div>
+        <div class="limit-bar">
+          <div class="limit-fill" id="limitFill"></div>
+        </div>
+        <div class="limit-info">
+          <span id="limitStatus">✅ ضمن الحد</span>
+          <span id="limitPercent">0%</span>
+        </div>
+      </div>
+
+      <!-- أعلى الفئات -->
+      <div class="top-section">
+        <h3 class="section-title">🏆 أعلى الفئات هذا الشهر</h3>
+        <div id="topCategoriesList" class="categories-list">
+          <p class="empty-msg">لا توجد بيانات بعد</p>
+        </div>
+      </div>
+
+      <!-- آخر المعاملات -->
+      <div class="top-section">
+        <h3 class="section-title">⚡ آخر المعاملات</h3>
+        <div id="recentList" class="recent-list">
+          <p class="empty-msg">لا توجد معاملات</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── إضافة معاملة ─── -->
+    <section class="panel" id="addPanel">
+
+      <h2 class="panel-title">➕ إضافة معاملة</h2>
+
+      <!-- نوع المعاملة -->
+      <div class="type-toggle">
+        <button class="type-btn active" data-type="expense" id="typeExpense">
+          <span>⬇️</span>
+          <span>مصروف</span>
+        </button>
+        <button class="type-btn" data-type="income" id="typeIncome">
+          <span>⬆️</span>
+          <span>دخل</span>
+        </button>
+      </div>
+
+      <!-- المبلغ -->
+      <div class="amount-section">
+        <input type="number" id="amountInput" placeholder="0" class="amount-input" step="0.01">
+        <span class="currency-label" id="currencyLabel">ج.م</span>
+      </div>
+
+      <!-- الوصف -->
+      <input type="text" id="descInput" class="desc-input" placeholder="الوصف (اختياري)...">
+
+      <!-- اختيار المحفظة -->
+      <div class="wallet-picker">
+        <h3>💳 من أي محفظة:</h3>
+        <div class="wallets-grid" id="walletsPicker"></div>
+      </div>
+
+      <!-- فئات المصاريف -->
+      <div class="categories-picker" id="expenseCategoriesSection">
+        <h3>🏷️ فئة المصروف:</h3>
+        <div class="categories-grid" id="expenseCategoriesPicker">
+          <button class="cat-card" data-category="food"><div class="cat-emoji">🍔</div><div class="cat-name">طعام</div></button>
+          <button class="cat-card" data-category="transport"><div class="cat-emoji">🚗</div><div class="cat-name">مواصلات</div></button>
+          <button class="cat-card" data-category="shopping"><div class="cat-emoji">🛒</div><div class="cat-name">تسوق</div></button>
+          <button class="cat-card" data-category="bills"><div class="cat-emoji">📃</div><div class="cat-name">فواتير</div></button>
+          <button class="cat-card" data-category="health"><div class="cat-emoji">💊</div><div class="cat-name">صحة</div></button>
+          <button class="cat-card" data-category="entertainment"><div class="cat-emoji">🎮</div><div class="cat-name">ترفيه</div></button>
+          <button class="cat-card" data-category="education"><div class="cat-emoji">📚</div><div class="cat-name">تعليم</div></button>
+          <button class="cat-card" data-category="gifts"><div class="cat-emoji">🎁</div><div class="cat-name">هدايا</div></button>
+          <button class="cat-card" data-category="travel"><div class="cat-emoji">✈️</div><div class="cat-name">سفر</div></button>
+          <button class="cat-card" data-category="other"><div class="cat-emoji">📌</div><div class="cat-name">أخرى</div></button>
+        </div>
+      </div>
+
+      <!-- فئات الدخل -->
+      <div class="categories-picker hidden" id="incomeCategoriesSection">
+        <h3>💰 مصدر الدخل:</h3>
+        <div class="categories-grid" id="incomeCategoriesPicker">
+          <button class="cat-card" data-category="salary"><div class="cat-emoji">💼</div><div class="cat-name">مرتب</div></button>
+          <button class="cat-card" data-category="allowance"><div class="cat-emoji">👨‍👩‍👧</div><div class="cat-name">مصروف والدي</div></button>
+          <button class="cat-card" data-category="freelance"><div class="cat-emoji">💻</div><div class="cat-name">عمل حر</div></button>
+          <button class="cat-card" data-category="bonus"><div class="cat-emoji">🎉</div><div class="cat-name">مكافأة</div></button>
+          <button class="cat-card" data-category="gift_income"><div class="cat-emoji">🎁</div><div class="cat-name">هدية</div></button>
+          <button class="cat-card" data-category="investment"><div class="cat-emoji">📈</div><div class="cat-name">استثمار</div></button>
+          <button class="cat-card" data-category="refund"><div class="cat-emoji">🔄</div><div class="cat-name">استرداد</div></button>
+          <button class="cat-card" data-category="other_income"><div class="cat-emoji">💰</div><div class="cat-name">أخرى</div></button>
+        </div>
+      </div>
+
+      <!-- زر الإضافة -->
+      <button class="add-btn" id="addTransactionBtn" disabled>
+        <span>💰</span>
+        <span>إضافة المعاملة</span>
+      </button>
+
+    </section>
+
+    <!-- ─── المحفظات ─── -->
+    <section class="panel" id="walletsPanel">
+
+      <div class="wallets-header">
+        <h2 class="panel-title">💳 محفظاتي</h2>
+        <button class="add-wallet-btn" id="addWalletBtn">➕ إضافة محفظة</button>
+      </div>
+
+      <div class="wallets-list" id="walletsList">
+        <p class="empty-msg">أضف أول محفظة!</p>
+      </div>
+
+      <!-- تفاصيل المحفظة -->
+      <div class="wallet-detail hidden" id="walletDetail">
+        <div class="wallet-detail-header" id="walletDetailHeader"></div>
+        <div class="wallet-detail-transactions" id="walletDetailTransactions"></div>
+      </div>
+
+    </section>
+
+    <!-- ─── السجل ─── -->
+    <section class="panel" id="listPanel">
+
+      <div class="list-header">
+        <h2 class="panel-title">📋 سجل المعاملات</h2>
+        <div class="list-filters">
+          <select id="filterType">
+            <option value="all">الكل</option>
+            <option value="expense">مصاريف فقط</option>
+            <option value="income">دخل فقط</option>
+          </select>
+          <select id="filterCategory">
+            <option value="all">كل الفئات</option>
+          </select>
+          <select id="filterPeriod">
+            <option value="all">كل الفترة</option>
+            <option value="today">اليوم</option>
+            <option value="week">الأسبوع</option>
+            <option value="month">الشهر</option>
+          </select>
+          <select id="filterWallet">
+            <option value="all">كل المحفظات</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list-summary" id="listSummary"></div>
+      <div class="transactions-list" id="transactionsList">
+        <p class="empty-msg">لا توجد معاملات</p>
+      </div>
+
+    </section>
+
+    <!-- ─── التقارير ─── -->
+    <section class="panel" id="chartsPanel">
+      <h2 class="panel-title">📈 التقارير والرسوم البيانية</h2>
+
+      <div class="chart-section">
+        <h3 class="chart-title">🥧 توزيع المصاريف حسب الفئة</h3>
+        <div class="pie-chart-container">
+          <canvas id="pieChart" width="300" height="300"></canvas>
+          <div class="pie-legend" id="pieLegend"></div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="chart-title">💰 توزيع الدخل حسب المصدر</h3>
+        <div class="pie-chart-container">
+          <canvas id="incomePieChart" width="300" height="300"></canvas>
+          <div class="pie-legend" id="incomePieLegend"></div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="chart-title">📊 الدخل مقابل المصاريف - آخر 7 أيام</h3>
+        <div class="bar-chart-container">
+          <canvas id="barChart" width="600" height="300"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="chart-title">📅 مقارنة آخر 6 شهور</h3>
+        <div class="bar-chart-container">
+          <canvas id="monthsChart" width="600" height="300"></canvas>
+        </div>
+      </div>
+
+      <!-- تقرير شهري -->
+      <div class="monthly-report" id="monthlyReport">
+        <h3 class="chart-title">📝 ملخص الشهر</h3>
+        <div class="report-content" id="reportContent"></div>
+      </div>
+
+    </section>
+
+    <!-- ─── الميزانية ─── -->
+    <section class="panel" id="budgetPanel">
+      <h2 class="panel-title">🎯 الميزانية الشهرية</h2>
+      <p class="budget-desc">حدد ميزانية لكل فئة وتابع إنفاقك</p>
+
+      <div class="budgets-list" id="budgetsList"></div>
+
+      <button class="save-budget-btn" id="saveBudgetBtn">💾 حفظ الميزانية</button>
+    </section>
+
+  </main>
+
+  <!-- Modal: إضافة محفظة -->
+  <div class="modal hidden" id="walletModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="walletModalTitle">➕ محفظة جديدة</h2>
+        <button class="close-modal" id="closeWalletModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>📝 اسم المحفظة:</label>
+          <input type="text" id="walletName" placeholder="مثال: مرتب شهري، مصروف والدي">
+        </div>
+        <div class="form-group">
+          <label>💰 الرصيد الحالي:</label>
+          <input type="number" id="walletBalance" placeholder="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>🎨 اختر أيقونة:</label>
+          <div class="wallet-icons-picker" id="walletIconsPicker">
+            <button class="w-icon" data-icon="💵">💵</button>
+            <button class="w-icon" data-icon="💳">💳</button>
+            <button class="w-icon" data-icon="🏦">🏦</button>
+            <button class="w-icon" data-icon="💼">💼</button>
+            <button class="w-icon" data-icon="👨‍👩‍👧">👨‍👩‍👧</button>
+            <button class="w-icon" data-icon="🎓">🎓</button>
+            <button class="w-icon" data-icon="📱">📱</button>
+            <button class="w-icon" data-icon="🐷">🐷</button>
+            <button class="w-icon" data-icon="💎">💎</button>
+            <button class="w-icon" data-icon="🏠">🏠</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>🎨 اختر لون:</label>
+          <div class="wallet-colors-picker" id="walletColorsPicker">
+            <button class="w-color" data-color="#10b981" style="background:#10b981"></button>
+            <button class="w-color" data-color="#3b82f6" style="background:#3b82f6"></button>
+            <button class="w-color" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+            <button class="w-color" data-color="#ec4899" style="background:#ec4899"></button>
+            <button class="w-color" data-color="#f59e0b" style="background:#f59e0b"></button>
+            <button class="w-color" data-color="#ef4444" style="background:#ef4444"></button>
+            <button class="w-color" data-color="#06b6d4" style="background:#06b6d4"></button>
+            <button class="w-color" data-color="#84cc16" style="background:#84cc16"></button>
+          </div>
+        </div>
+        <button class="save-btn" id="saveWalletBtn">💾 حفظ المحفظة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: الإعدادات -->
+  <div class="modal hidden" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙️ الإعدادات</h2>
+        <button class="close-modal" id="closeSettings">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-row">
+          <label>الحد الأقصى اليومي:</label>
+          <div class="input-with-currency">
+            <input type="number" id="dailyLimitInput" placeholder="200">
+            <span>ج.م</span>
+          </div>
+        </div>
+        <div class="setting-row">
+          <label>العملة:</label>
+          <select id="currencyInput">
+            <option value="ج.م">جنيه مصري (ج.م)</option>
+            <option value="$">دولار ($)</option>
+            <option value="€">يورو (€)</option>
+            <option value="ر.س">ريال سعودي (ر.س)</option>
+            <option value="د.إ">درهم إماراتي (د.إ)</option>
+            <option value="د.ك">دينار كويتي (د.ك)</option>
+          </select>
+        </div>
+        <button class="save-settings-btn" id="saveSettingsBtn">💾 حفظ</button>
+        <button class="danger-btn" id="resetAllBtn">🗑️ مسح كل البيانات</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- شريط الحالة -->
+  <footer class="status-bar">
+    <span id="statusMessage">✅ جاهز!</span>
+  </footer>
+
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

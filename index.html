@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeHub - أدوات قوية لحياتك</title>
+  <meta name="description" content="مجموعة أدوات احترافية لتنظيم حياتك اليومية - بدون نت، بدون اشتراك، 100% مجاني">
+
+  <!-- الخطوط -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- الستايل -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- خلفية متحركة -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- شريط علوي -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">LifeHub</span>
+    </a>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" title="تبديل المظهر">🌙</button>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="main">
+
+    <!-- العنوان -->
+    <section class="hero">
+      <p class="greeting" id="greeting">☀️ صباح الخير</p>
+      <h1 class="title">أدوات <span class="gradient-text">قوية</span> لحياتك</h1>
+      <p class="subtitle" id="dateText">جاري التحميل...</p>
+
+      <!-- إحصائيات سريعة -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="totalSessions">0</span>
+          <span class="hero-stat-label">جلسة تركيز</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="totalNotes">0</span>
+          <span class="hero-stat-label">ملاحظة</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="totalHabits">0</span>
+          <span class="hero-stat-label">عادة</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="dayStreak">0</span>
+          <span class="hero-stat-label">🔥 يوم</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- الكروت -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title">أدواتك</h2>
+        <span class="tools-count">7 أدوات احترافية</span>
+      </div>
+
+      <div class="cards-grid">
+
+        <a href="tools/pomodoro/index.html" class="card" data-color="pink">
+          <div class="card-icon">⏰</div>
+          <h3 class="card-title">Pomodoro Pro</h3>
+          <p class="card-desc">مؤقت تركيز احترافي مع شجرة تنمو وأصوات طبيعة</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-pomodoro">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/notes/index.html" class="card" data-color="cyan">
+          <div class="card-icon">📝</div>
+          <h3 class="card-title">Quick Notes</h3>
+          <p class="card-desc">ملاحظات ذكية بـ Markdown مع معاينة فورية</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-notes">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/habits/index.html" class="card" data-color="red">
+          <div class="card-icon">🎯</div>
+          <h3 class="card-title">Habit Streak</h3>
+          <p class="card-desc">ابنِ عادات قوية بنظام Streak ناري 🔥</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-habits">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/expenses/index.html" class="card" data-color="green">
+          <div class="card-icon">💰</div>
+          <h3 class="card-title">Expense Lite</h3>
+          <p class="card-desc">تتبع مصاريفك بسرعة مع رسوم بيانية</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-expenses">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/password/index.html" class="card" data-color="yellow">
+          <div class="card-icon">🔐</div>
+          <h3 class="card-title">Password Generator</h3>
+          <p class="card-desc">كلمات مرور قوية بمقياس أمان بصري</p>
+          <div class="card-footer">
+            <!-- ✅ تم إضافة id="cardStat-password" لعرض الإحصائيات -->
+            <span class="card-stat" id="cardStat-password">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/colors/index.html" class="card" data-color="purple">
+          <div class="card-icon">🎨</div>
+          <h3 class="card-title">Color Picker</h3>
+          <p class="card-desc">استخرج ألوان من الصور وأنشئ palettes احترافية</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-colors">جرّب الآن →</span>
+          </div>
+        </a>
+
+        <a href="tools/random/index.html" class="card" data-color="blue">
+          <div class="card-icon">🎲</div>
+          <h3 class="card-title">Dice & Random</h3>
+          <p class="card-desc">نرد ثلاثي الأبعاد وأدوات عشوائية ممتعة</p>
+          <div class="card-footer">
+            <span class="card-stat" id="cardStat-random">جرّب الآن →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- مميزات الموقع -->
+    <section class="features-section">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <div class="feature-title">يعمل أوفلاين</div>
+          <div class="feature-desc">بدون إنترنت بعد التحميل</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">خصوصية تامة</div>
+          <div class="feature-desc">بياناتك على جهازك فقط</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💎</div>
+          <div class="feature-title">مجاني 100%</div>
+          <div class="feature-desc">بدون اشتراك أو إعلانات</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <div class="feature-title">يعمل على الكل</div>
+          <div class="feature-desc">موبايل، تابلت، كمبيوتر</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- التذييل -->
+  <footer class="footer">
+    <p>صُنع بـ <span class="heart">❤️</span> لتنظيم حياتك</p>
+    <p class="footer-sub">LifeHub © 2025 • 7 أدوات احترافية</p>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- السكريبت -->
+  <script src="js/app.js"></script>
+</body>
+</html>

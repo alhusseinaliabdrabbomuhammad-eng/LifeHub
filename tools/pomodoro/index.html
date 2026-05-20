@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pomodoro Pro — LifeHub</title>
+  <meta
+    name="description"
+    content="Pomodoro Pro داخل LifeHub — مؤقت تركيز احترافي مع شجرة تنمو، أصوات خلفية، مهام، وإحصائيات أسبوعية"
+  />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Global -->
+  <link rel="stylesheet" href="../../css/variables.css" />
+  <link rel="stylesheet" href="../../css/tour.css" />
+
+  <!-- Tool CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-glow"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="tool-header">
+    <div class="header-side">
+      <a href="../../index.html" class="back-btn">
+        <span>←</span>
+        <span>العودة</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <h1 class="tool-title">
+        <span class="tool-icon">⏰</span>
+        <span>Pomodoro Pro</span>
+      </h1>
+      <p class="tool-subtitle">ركّز، ازرع شجرة، وابنِ غابة من الإنجاز 🌳</p>
+    </div>
+
+    <div class="header-side header-actions">
+      <button class="ghost-btn" id="forestBtn" type="button">
+        <span>🌲</span>
+        <span>غابتي</span>
+      </button>
+
+      <button class="ghost-btn" id="statsBtn" type="button">
+        <span>📊</span>
+        <span>إحصائياتي</span>
+      </button>
+
+      <button class="ghost-btn" id="settingsBtn" type="button">
+        <span>⚙️</span>
+        <span>الإعدادات</span>
+      </button>
+
+      <button data-tour="pomodoro" aria-label="جولة تفاعلية"></button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="tool-shell">
+    <!-- Hero Overview -->
+    <section class="hero-card">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <p class="eyebrow">Deep Focus Experience</p>
+          <h2 class="hero-title">
+            كل جلسة تركيز
+            <span class="hero-gradient">تزرع شجرة</span>
+            في غابتك
+          </h2>
+          <p class="hero-description">
+            مستلهم من أفضل أدوات التركيز الحديثة:
+            مؤقت مرئي، نظام streak، أصوات خلفية، تكامل مهام، ورسوم أسبوعية تساعدك
+            تشوف تقدمك الحقيقي.
+          </p>
+        </div>
+
+        <div class="hero-streak-card">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-copy">
+            <span class="streak-label">Streak الحالي</span>
+            <strong class="streak-value" id="dayStreak">0</strong>
+            <span class="streak-sub">يوم متتالي من التركيز</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🌳</span>
+          <div>
+            <div class="hero-stat-value" id="todayTrees">0</div>
+            <div class="hero-stat-label">شجرة اليوم</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🎯</span>
+          <div>
+            <div class="hero-stat-value" id="dailyGoalDisplay">0/8</div>
+            <div class="hero-stat-label">الهدف اليومي</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">⏱️</span>
+          <div>
+            <div class="hero-stat-value" id="todayMinutes">0</div>
+            <div class="hero-stat-label">دقيقة تركيز</div>
+          </div>
+        </div>
+
+        <div class="hero-stat-card">
+          <span class="hero-stat-icon">🏆</span>
+          <div>
+            <div class="hero-stat-value" id="focusLevel">1</div>
+            <div class="hero-stat-label">مستوى التركيز</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Layout -->
+    <div class="tool-layout">
+      <!-- Timer Column -->
+      <section class="main-column">
+        <!-- Focus Panel -->
+        <section class="panel timer-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Focus Timer</p>
+              <h3 class="panel-title">جلسة التركيز الحالية</h3>
+            </div>
+
+            <div class="session-pills">
+              <span class="live-pill" id="timerStateBadge">جاهز</span>
+              <span class="live-pill alt" id="nextBreakBadge">الراحة التالية بعد 4 جلسات</span>
+            </div>
+          </div>
+
+          <!-- Mode Selector -->
+          <div class="mode-selector">
+            <button class="mode-btn active" data-mode="focus" type="button">
+              <span class="mode-emoji">🎯</span>
+              <span class="mode-name">تركيز</span>
+              <span class="mode-meta">25 دقيقة</span>
+            </button>
+
+            <button class="mode-btn" data-mode="short" type="button">
+              <span class="mode-emoji">☕</span>
+              <span class="mode-name">راحة قصيرة</span>
+              <span class="mode-meta">5 دقائق</span>
+            </button>
+
+            <button class="mode-btn" data-mode="long" type="button">
+              <span class="mode-emoji">🛋️</span>
+              <span class="mode-name">راحة طويلة</span>
+              <span class="mode-meta">15 دقيقة</span>
+            </button>
+          </div>
+
+          <!-- Current Task -->
+          <div class="current-task-card">
+            <div class="current-task-top">
+              <label class="current-task-label" for="currentTask">📝 المهمة الحالية</label>
+              <button class="text-btn" id="pickTaskBtn" type="button">من المهام</button>
+            </div>
+
+            <div class="current-task-row">
+              <input
+                type="text"
+                id="currentTask"
+                class="current-task-input"
+                placeholder="مثال: إنهاء صفحة الهوم — مراجعة التصميم — كتابة الملاحظات"
+                maxlength="120"
+                autocomplete="off"
+              />
+              <button class="soft-btn wide" id="saveTaskBtn" type="button">حفظ</button>
+            </div>
+
+            <div class="current-task-display" id="currentTaskDisplay">
+              <span class="task-icon">🎯</span>
+              <span class="task-text" id="currentTaskText">لا توجد مهمة محددة الآن</span>
+              <button class="task-change-btn" id="clearCurrentTaskBtn" type="button">مسح</button>
+            </div>
+          </div>
+
+          <!-- Timer + Tree -->
+          <div class="timer-section">
+            <!-- Tree Side -->
+            <div class="tree-panel">
+              <div class="tree-container">
+                <div class="tree-stage-badge" id="treeStageBadge">Stage 0</div>
+
+                <svg id="treeSvg" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg" aria-label="شجرة التركيز">
+                  <defs>
+                    <linearGradient id="treeGround" x1="0" x2="1">
+                      <stop offset="0%" stop-color="rgba(139,92,246,0.1)" />
+                      <stop offset="100%" stop-color="rgba(236,72,153,0.22)" />
+                    </linearGradient>
+                  </defs>
+
+                  <ellipse cx="110" cy="255" rx="90" ry="10" fill="url(#treeGround)"></ellipse>
+                  <g id="treeArt"></g>
+                </svg>
+
+                <div class="tree-message" id="treeMessage">🌱 جاهز للنمو</div>
+              </div>
+
+              <div class="tree-progress-card">
+                <div class="tree-progress-row">
+                  <span>تقدم النمو</span>
+                  <strong id="treeProgressText">0%</strong>
+                </div>
+                <div class="mini-progress">
+                  <div class="mini-progress-fill" id="treeProgressFill"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timer Side -->
+            <div class="timer-panel-center">
+              <div class="timer-circle-shell">
+                <div class="timer-glow"></div>
+
+                <div class="timer-circle">
+                  <svg viewBox="0 0 220 220" class="ring-svg">
+                    <circle cx="110" cy="110" r="96" class="ring-bg"></circle>
+                    <circle cx="110" cy="110" r="96" class="ring-progress" id="ringProgress"></circle>
+                  </svg>
+
+                  <div class="timer-display">
+                    <div class="timer-overline" id="timerOverline">Pomodoro Session</div>
+                    <div class="timer-time" id="timerTime">25:00</div>
+                    <div class="timer-label" id="timerLabel">جلسة تركيز</div>
+                    <div class="timer-cycle" id="timerCycle">جلسة 1 من 4</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timer-meta-grid">
+                <div class="timer-meta-card">
+                  <span class="timer-meta-label">الجلسات اليوم</span>
+                  <strong class="timer-meta-value" id="todaySessionsCount">0</strong>
+                </div>
+
+                <div class="timer-meta-card">
+                  <span class="timer-meta-label">إجمالي الأشجار</span>
+                  <strong class="timer-meta-value" id="totalTreesCount">0</strong>
+                </div>
+
+                <div class="timer-meta-card">
+                  <span class="timer-meta-label">نجاح الجلسات</span>
+                  <strong class="timer-meta-value" id="successRate">0%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="controls-wrap">
+            <div class="controls">
+              <button class="control-btn secondary" id="resetBtn" type="button" title="إعادة">
+                <span>↺</span>
+              </button>
+
+              <button class="control-btn primary" id="startBtn" type="button">
+                <span id="startIcon">▶</span>
+                <span id="startText">ابدأ</span>
+              </button>
+
+              <button class="control-btn secondary" id="skipBtn" type="button" title="تخطي">
+                <span>⏭</span>
+              </button>
+            </div>
+
+            <div class="control-hints">
+              <span>Space = ابدأ/إيقاف</span>
+              <span>R = إعادة</span>
+              <span>S = تخطي</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sounds Panel -->
+        <section class="panel sounds-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Ambient Soundscape</p>
+              <h3 class="panel-title">الأصوات الخلفية</h3>
+            </div>
+
+            <span class="live-pill alt" id="currentSoundLabel">🔇 صامت</span>
+          </div>
+
+          <div class="sounds-grid">
+            <button class="sound-btn active" data-sound="none" type="button" title="صامت">
+              <span class="sound-icon">🔇</span>
+              <span class="sound-name">صامت</span>
+            </button>
+
+            <button class="sound-btn" data-sound="rain" type="button" title="مطر">
+              <span class="sound-icon">🌧️</span>
+              <span class="sound-name">مطر</span>
+            </button>
+
+            <button class="sound-btn" data-sound="forest" type="button" title="غابة">
+              <span class="sound-icon">🌲</span>
+              <span class="sound-name">غابة</span>
+            </button>
+
+            <button class="sound-btn" data-sound="cafe" type="button" title="مقهى">
+              <span class="sound-icon">☕</span>
+              <span class="sound-name">مقهى</span>
+            </button>
+
+            <button class="sound-btn" data-sound="ocean" type="button" title="محيط">
+              <span class="sound-icon">🌊</span>
+              <span class="sound-name">محيط</span>
+            </button>
+
+            <button class="sound-btn" data-sound="fire" type="button" title="مدفأة">
+              <span class="sound-icon">🔥</span>
+              <span class="sound-name">مدفأة</span>
+            </button>
+          </div>
+
+          <div class="volume-control">
+            <span class="volume-icon">🔉</span>
+            <input type="range" id="volumeSlider" min="0" max="100" value="45" />
+            <span class="volume-value" id="volumeValue">45%</span>
+          </div>
+        </section>
+
+        <!-- Weekly Chart -->
+        <section class="panel analytics-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Weekly Insight</p>
+              <h3 class="panel-title">إحصائيات الأسبوع</h3>
+            </div>
+
+            <span class="live-pill" id="weekHeadline">هذا الأسبوع</span>
+          </div>
+
+          <div class="weekly-chart-card">
+            <div class="weekly-chart-head">
+              <div>
+                <strong class="weekly-chart-title">آخر 7 أيام</strong>
+                <p class="weekly-chart-sub">عدد جلسات التركيز المكتملة يوميًا</p>
+              </div>
+            </div>
+
+            <div class="weekly-chart" id="weeklyChart">
+              <!-- JS -->
+            </div>
+
+            <div class="weekly-summary">
+              <div class="summary-card">
+                <span class="summary-label">الجلسات</span>
+                <strong class="summary-value" id="weekSessions">0</strong>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">الدقائق</span>
+                <strong class="summary-value" id="weekMinutes">0</strong>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">الأشجار</span>
+                <strong class="summary-value" id="weekTrees">0</strong>
+              </div>
+
+              <div class="summary-card">
+                <span class="summary-label">المتوسط اليومي</span>
+                <strong class="summary-value" id="weekDailyAvg">0</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Side Column -->
+      <aside class="side-column">
+        <!-- Focus Score -->
+        <section class="panel side-insight-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Focus Score</p>
+              <h3 class="panel-title">حالة يومك</h3>
+            </div>
+
+            <span class="quality-badge" id="focusMoodBadge">هادئ</span>
+          </div>
+
+          <div class="focus-score-box">
+            <div class="focus-score-ring">
+              <div class="focus-score-value" id="focusScore">0</div>
+              <div class="focus-score-unit">/100</div>
+            </div>
+
+            <div class="focus-score-copy">
+              <p class="focus-score-title" id="focusScoreTitle">ابدأ أول جلسة</p>
+              <p class="focus-score-desc" id="focusScoreDesc">
+                مع كل جلسة تركز فيها، يومك هيبقى أوضح وغابتك تكبر.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tasks Integration -->
+        <section class="panel tasks-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Task Integration</p>
+              <h3 class="panel-title">المهام</h3>
+            </div>
+
+            <button class="text-btn" id="clearDoneTasksBtn" type="button">مسح المنجَز</button>
+          </div>
+
+          <div class="quick-task-form">
+            <input
+              type="text"
+              id="taskInput"
+              class="task-input"
+              placeholder="أضف مهمة سريعة..."
+              maxlength="120"
+              autocomplete="off"
+            />
+
+            <div class="task-form-row">
+              <div class="pomo-counter">
+                <button class="pc-btn" id="pomoMinus" type="button">−</button>
+                <span id="pomoCount">1</span>
+                <button class="pc-btn" id="pomoPlus" type="button">+</button>
+              </div>
+
+              <button class="add-task-btn" id="quickAddTask" type="button">➕ إضافة</button>
+            </div>
+          </div>
+
+          <div class="task-filter-row">
+            <button class="filter-btn active" data-filter="all" type="button">الكل</button>
+            <button class="filter-btn" data-filter="active" type="button">الجارية</button>
+            <button class="filter-btn" data-filter="done" type="button">المنجَز</button>
+          </div>
+
+          <div class="tasks-list" id="tasksList">
+            <div class="empty-state compact">
+              <div class="empty-icon">📝</div>
+              <p class="empty-title">لسه مفيش مهام</p>
+              <p class="empty-desc">أضف أول مهمة وخلي الجلسات ترتبط بيها</p>
+            </div>
+          </div>
+
+          <div class="tasks-summary" id="tasksSummary">
+            0 مهام • 0 منجَز • 0 بومودورو مخطط
+          </div>
+        </section>
+
+        <!-- Recent Sessions -->
+        <section class="panel log-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Recent Sessions</p>
+              <h3 class="panel-title">آخر الجلسات</h3>
+            </div>
+
+            <span class="live-pill alt" id="sessionsCountBadge">0 جلسة</span>
+          </div>
+
+          <div class="sessions-list" id="sessionsList">
+            <div class="empty-state compact">
+              <div class="empty-icon">⏳</div>
+              <p class="empty-title">لا يوجد سجل بعد</p>
+              <p class="empty-desc">أكمل أول جلسة تركيز لتبدأ الإحصائيات</p>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Forest Modal -->
+  <div class="modal hidden" id="forestModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Your Focus Forest</p>
+          <h3 class="modal-title">🌲 غابتك</h3>
+        </div>
+        <button class="close-modal" id="closeForest" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="forest-stats">
+          <div class="forest-stat-card">
+            <span class="forest-stat-icon">🌳</span>
+            <strong id="forestTotalTrees">0</strong>
+            <span>إجمالي الأشجار</span>
+          </div>
+
+          <div class="forest-stat-card">
+            <span class="forest-stat-icon">⏱️</span>
+            <strong id="forestTotalHours">0</strong>
+            <span>ساعات تركيز</span>
+          </div>
+
+          <div class="forest-stat-card">
+            <span class="forest-stat-icon">🔥</span>
+            <strong id="forestDayStreak">0</strong>
+            <span>أعلى Streak</span>
+          </div>
+
+          <div class="forest-stat-card">
+            <span class="forest-stat-icon">📅</span>
+            <strong id="forestActiveDays">0</strong>
+            <span>أيام نشطة</span>
+          </div>
+        </div>
+
+        <div class="forest-display-wrap">
+          <div class="forest-display" id="forestDisplay">
+            <!-- JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal hidden" id="settingsModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Preferences</p>
+          <h3 class="modal-title">⚙️ إعدادات Pomodoro</h3>
+        </div>
+        <button class="close-modal" id="closeSettings" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="settings-section">
+          <h4 class="settings-title">⏱️ مدد الجلسات</h4>
+
+          <div class="setting-row">
+            <label for="focusDuration">جلسة التركيز</label>
+            <div class="num-input">
+              <button class="num-btn" data-target="focusDuration" data-action="dec" type="button">−</button>
+              <input type="number" id="focusDuration" min="1" max="120" value="25" />
+              <button class="num-btn" data-target="focusDuration" data-action="inc" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <label for="shortDuration">راحة قصيرة</label>
+            <div class="num-input">
+              <button class="num-btn" data-target="shortDuration" data-action="dec" type="button">−</button>
+              <input type="number" id="shortDuration" min="1" max="30" value="5" />
+              <button class="num-btn" data-target="shortDuration" data-action="inc" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <label for="longDuration">راحة طويلة</label>
+            <div class="num-input">
+              <button class="num-btn" data-target="longDuration" data-action="dec" type="button">−</button>
+              <input type="number" id="longDuration" min="1" max="60" value="15" />
+              <button class="num-btn" data-target="longDuration" data-action="inc" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <label for="cyclesBeforeLong">جلسات قبل الراحة الطويلة</label>
+            <div class="num-input">
+              <button class="num-btn" data-target="cyclesBeforeLong" data-action="dec" type="button">−</button>
+              <input type="number" id="cyclesBeforeLong" min="2" max="10" value="4" />
+              <button class="num-btn" data-target="cyclesBeforeLong" data-action="inc" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <label for="dailyGoal">الهدف اليومي</label>
+            <div class="num-input">
+              <button class="num-btn" data-target="dailyGoal" data-action="dec" type="button">−</button>
+              <input type="number" id="dailyGoal" min="1" max="20" value="8" />
+              <button class="num-btn" data-target="dailyGoal" data-action="inc" type="button">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h4 class="settings-title">🔧 خيارات ذكية</h4>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="autoStartBreaks" checked />
+            <span>بدء الراحات تلقائيًا</span>
+          </label>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="autoStartFocus" />
+            <span>بدء التركيز تلقائيًا بعد الراحة</span>
+          </label>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="enableNotifications" checked />
+            <span>إشعارات سطح المكتب</span>
+          </label>
+
+          <label class="toggle-row">
+            <input type="checkbox" id="strictTreeMode" checked />
+            <span>لو أوقفت الجلسة قبل نهايتها، الشجرة تموت 💔</span>
+          </label>
+        </div>
+
+        <div class="settings-section">
+          <h4 class="settings-title">⚡ Presets</h4>
+
+          <div class="presets-grid">
+            <button class="preset-btn" data-preset="classic" type="button">
+              <strong>25 / 5</strong>
+              <small>Classic</small>
+            </button>
+
+            <button class="preset-btn" data-preset="flow" type="button">
+              <strong>50 / 10</strong>
+              <small>Flow</small>
+            </button>
+
+            <button class="preset-btn" data-preset="light" type="button">
+              <strong>15 / 3</strong>
+              <small>Light</small>
+            </button>
+
+            <button class="preset-btn" data-preset="deep" type="button">
+              <strong>90 / 20</strong>
+              <small>Deep Work</small>
+            </button>
+          </div>
+        </div>
+
+        <button class="save-btn" id="saveSettings" type="button">💾 حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Modal -->
+  <div class="modal hidden" id="statsModal">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Full Analytics</p>
+          <h3 class="modal-title">📊 الإحصائيات الكاملة</h3>
+        </div>
+        <button class="close-modal" id="closeStats" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="stats-grid-modal">
+          <div class="stat-modal-card">
+            <div class="smc-icon">🎯</div>
+            <div class="smc-value" id="statTotalSessions">0</div>
+            <div class="smc-label">إجمالي الجلسات</div>
+          </div>
+
+          <div class="stat-modal-card">
+            <div class="smc-icon">⏱️</div>
+            <div class="smc-value" id="statTotalMinutes">0</div>
+            <div class="smc-label">إجمالي الدقائق</div>
+          </div>
+
+          <div class="stat-modal-card">
+            <div class="smc-icon">🌳</div>
+            <div class="smc-value" id="statTotalTrees">0</div>
+            <div class="smc-label">إجمالي الأشجار</div>
+          </div>
+
+          <div class="stat-modal-card">
+            <div class="smc-icon">💔</div>
+            <div class="smc-value" id="statTotalDied">0</div>
+            <div class="smc-label">أشجار ماتت</div>
+          </div>
+
+          <div class="stat-modal-card">
+            <div class="smc-icon">🔥</div>
+            <div class="smc-value" id="statBestStreak">0</div>
+            <div class="smc-label">أفضل Streak</div>
+          </div>
+
+          <div class="stat-modal-card">
+            <div class="smc-icon">📅</div>
+            <div class="smc-value" id="statActiveDays">0</div>
+            <div class="smc-label">أيام نشطة</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete Modal -->
+  <div class="modal hidden" id="completeModal">
+    <div class="modal-dialog modal-sm">
+      <div class="complete-box">
+        <div class="complete-icon" id="completeIcon">🌳</div>
+        <h3 class="complete-title" id="completeTitle">رائع!</h3>
+        <p class="complete-message" id="completeMsg">انتهت الجلسة بنجاح</p>
+        <div class="complete-reward" id="completeReward">+1 شجرة • +25 دقيقة تركيز</div>
+        <button class="save-btn" id="completeOk" type="button">متابعة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <footer class="status-bar">
+    <div class="status-message" id="statusMessage">✅ جاهز! اضغط ابدأ لزرع أول شجرة</div>
+    <div class="status-shortcuts">
+      <span>Space = ابدأ/إيقاف</span>
+      <span>R = إعادة</span>
+      <span>S = تخطي</span>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="../../js/tour.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+/* ═══════════════════════════════════════════════
+   Tour System - الستايل المشترك
+═══════════════════════════════════════════════ */
+
+/* ─── زر علامة التعجب ─── */
+.tour-trigger {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+  transition: 0.3s;
+  font-family: 'Cairo', sans-serif;
+}
+
+.tour-trigger:hover {
+  transform: scale(1.15) rotate(15deg);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.7);
+}
+
+.tour-trigger::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #f59e0b;
+  opacity: 0.5;
+  animation: tourPulse 2s infinite;
+}
+
+@keyframes tourPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════
+   Overlay (الخلفية المعتمة)
+═══════════════════════════════════════════════ */
+.tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tour-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Spotlight (الإضاءة على العنصر) ─── */
+.tour-spotlight {
+  position: fixed;
+  z-index: 9999;
+  border-radius: 12px;
+  box-shadow: 
+    0 0 0 9999px rgba(0, 0, 0, 0.75),
+    0 0 0 4px #f59e0b,
+    0 0 40px rgba(245, 158, 11, 0.8),
+    0 0 80px rgba(245, 158, 11, 0.4);
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.tour-spotlight.active {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   بطاقة الشرح
+═══════════════════════════════════════════════ */
+.tour-card {
+  position: fixed;
+  z-index: 10000;
+  background: linear-gradient(135deg, #1a2032, #0f172a);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 360px;
+  min-width: 300px;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(245, 158, 11, 0.3);
+  color: #f8fafc;
+  font-family: 'Cairo', sans-serif;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.tour-card.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* السهم */
+.tour-card::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #1a2032, #0f172a);
+  border: 2px solid #f59e0b;
+  transform: rotate(45deg);
+}
+
+.tour-card[data-position="top"]::before {
+  bottom: -10px;
+  left: 50%;
+  margin-left: -8px;
+  border-top: none;
+  border-right: none;
+}
+
+.tour-card[data-position="bottom"]::before {
+  top: -10px;
+  left: 50%;
+  margin-left: -8px;
+  border-bottom: none;
+  border-left: none;
+}
+
+.tour-card[data-position="left"]::before {
+  right: -10px;
+  top: 50%;
+  margin-top: -8px;
+  border-bottom: none;
+  border-left: none;
+}
+
+.tour-card[data-position="right"]::before {
+  left: -10px;
+  top: 50%;
+  margin-top: -8px;
+  border-top: none;
+  border-right: none;
+}
+
+/* ─── محتوى البطاقة ─── */
+.tour-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tour-step-num {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tour-close {
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #f8fafc;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.tour-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.tour-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tour-icon {
+  font-size: 1.5rem;
+}
+
+.tour-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+/* ─── شريط التقدم ─── */
+.tour-progress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.tour-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* ─── الأزرار ─── */
+.tour-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tour-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tour-btn.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tour-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+.tour-btn.primary {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.tour-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+}
+
+.tour-btn.pause {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tour-btn.pause:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ─── مؤشر الخطوات ─── */
+.tour-dots {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.tour-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: 0.3s;
+}
+
+.tour-dot.active {
+  background: #f59e0b;
+  width: 20px;
+  border-radius: 999px;
+}
+
+.tour-dot.done {
+  background: #10b981;
+}
+
+/* ═══════════════════════════════════════════════
+   تأثيرات إضافية
+═══════════════════════════════════════════════ */
+
+/* وميض على العنصر النشط */
+@keyframes tourHighlight {
+  0%, 100% { box-shadow: 
+    0 0 0 9999px rgba(0, 0, 0, 0.75),
+    0 0 0 4px #f59e0b,
+    0 0 40px rgba(245, 158, 11, 0.8); 
+  }
+  50% { box-shadow: 
+    0 0 0 9999px rgba(0, 0, 0, 0.75),
+    0 0 0 4px #ef4444,
+    0 0 60px rgba(239, 68, 68, 1); 
+  }
+}
+
+.tour-spotlight.pulsing {
+  animation: tourHighlight 2s infinite;
+}
+
+/* مؤشر النقر (يد) */
+.tour-pointer {
+  position: fixed;
+  z-index: 10001;
+  font-size: 2.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.4s;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.tour-pointer.active {
+  opacity: 1;
+  animation: pointerTap 1s ease-in-out infinite;
+}
+
+@keyframes pointerTap {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.2) translateY(-5px); }
+}
+
+/* ─── رسالة الترحيب ─── */
+.tour-welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+}
+
+.tour-welcome.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tour-welcome-box {
+  background: linear-gradient(135deg, #1a2032, #0f172a);
+  border: 2px solid #f59e0b;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(245, 158, 11, 0.4);
+  transform: scale(0.8);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tour-welcome.active .tour-welcome-box {
+  transform: scale(1);
+}
+
+.tour-welcome-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  animation: bounceIn 1s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.tour-welcome-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.tour-welcome-desc {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.tour-welcome-stats {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tour-welcome-stat {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: #f59e0b;
+  font-family: 'Cairo', sans-serif;
+}
+
+.tour-welcome-stat strong {
+  display: block;
+  font-size: 1.4rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tour-welcome-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.tour-welcome-btn {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.tour-welcome-btn.start {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+
+.tour-welcome-btn.start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.7);
+}
+
+.tour-welcome-btn.skip {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tour-welcome-btn.skip:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ─── رسالة النهاية ─── */
+.tour-complete {
+  text-align: center;
+}
+
+.tour-complete-icon {
+  font-size: 4rem;
+  margin-bottom: 12px;
+  animation: celebrate 1s ease infinite;
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .tour-card {
+    max-width: calc(100vw - 40px);
+    min-width: auto;
+    padding: 16px;
+  }
+
+  .tour-title {
+    font-size: 1rem;
+  }
+
+  .tour-description {
+    font-size: 0.85rem;
+  }
+
+  .tour-welcome-box {
+    padding: 24px;
+  }
+
+  .tour-welcome-title {
+    font-size: 1.4rem;
+  }
+
+  .tour-trigger {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+}
